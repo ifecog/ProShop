@@ -38,7 +38,7 @@ function ProductScreen() {
             </ListGroup.Item>
             
             <ListGroup.Item>
-              Quantity: {product.countInStock}
+              Quantity: {product.count_in_stock}
             </ListGroup.Item>
             
             <ListGroup.Item>
@@ -46,7 +46,7 @@ function ProductScreen() {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'} />
+              <Rating value={product.rating} text={`${product.num_reviews} reviews`} color={'#f8e825'} />
             </ListGroup.Item>
 
           </ListGroup>
@@ -68,7 +68,7 @@ function ProductScreen() {
                 <Row>
                   <Col>Status:</Col>
                   <Col>
-                    <strong>{product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}</strong>
+                    <strong>{product.count_in_stock > 0 ? 'In Stock' : 'Out of Stock'}</strong>
                   </Col>
                 </Row>                
               </ListGroup.Item>
