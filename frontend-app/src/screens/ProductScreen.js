@@ -1,13 +1,15 @@
 import React, { useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Button, Card, Form, ListGroupItem } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { listProductDetail } from '../actions/productActions'
 
 function ProductScreen() {
+  const [qty, setqty] = useState(1)
+
   const dispatch = useDispatch()
   const productDetail = useSelector(state => state.productDetail)
   const { error, loading, product } = productDetail
@@ -19,18 +21,6 @@ function ProductScreen() {
 
   }, [id, dispatch])
 
-  // const [ product, setProduct ] = useState([])
-  // const { id } = useParams()
-
-  // useEffect(() => {
-  //   async function fetchProduct(){
-  //     const { data } = await axios.get(`/api/products/${id}`)
-  //     setProduct(data)
-  //   }
-
-  //   fetchProduct()  
-    
-  // }, [id])
 
   return (
     <div>
@@ -89,6 +79,20 @@ function ProductScreen() {
                     </Row>                
                   </ListGroup.Item>
 
+                  {product.count_in_stock > 0 && (
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Qty</Col>
+                        <Col>
+                          <Form>
+                            as='select'
+                            value={qty}
+                          </Form>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )}
+
                   <ListGroup.Item className='text-center'>
                     <Button className='btn-block' disabled={product.countInStock === 0} type='button'>Add to Cart</Button>
                   </ListGroup.Item>
@@ -112,3 +116,16 @@ export default ProductScreen
   //     </div>
   //   )
   // }
+
+    // const [ product, setProduct ] = useState([])
+  // const { id } = useParams()
+
+  // useEffect(() => {
+  //   async function fetchProduct(){
+  //     const { data } = await axios.get(`/api/products/${id}`)
+  //     setProduct(data)
+  //   }
+
+  //   fetchProduct()  
+    
+  // }, [id])
