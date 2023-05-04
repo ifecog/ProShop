@@ -12,8 +12,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 # Create your views here.
-
-
 @api_view(['GET'])
 def get_routes(request):
     return Response('Hello')
@@ -30,10 +28,6 @@ def get_products(request):
 def get_product_detail(request, pk):
     product = Product.objects.get(_id=pk)
     serializer = ProductSerializer(product, many=False)
-    # for i in products:
-    #     if i['_id'] == pk:
-    #         product = i
-    #         break
     return Response(serializer.data)
 
 
