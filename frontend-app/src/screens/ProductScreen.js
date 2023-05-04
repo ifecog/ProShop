@@ -40,7 +40,7 @@ function ProductScreen() {
 
             <Col md={3}>
               <ListGroup variant='flush'>
-                <ListGroup.Item>
+                <ListGroup.Item style={{ textDecoration: 'none' }}>
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
 
@@ -90,6 +90,7 @@ function ProductScreen() {
                         <Col>Qty</Col>
                         <Col xs='auto' className='my-1'>
                           <Form.Control
+                            className='form-select form-select-override'
                             as='select'
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}

@@ -2,6 +2,16 @@ main {
   min-height: 80vh;
 }
 
+h1 {
+  font-size: 1.8rem;
+  padding: 1rem 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+  padding: 0.5rem 0;
+}
+
 h3 {
   padding: 1rem 0;
 }
@@ -10,3 +20,6 @@ h3 {
   margin: 0.1rem;
 }
 
+.form-select-override {
+  padding: 0.5rem 0.5rem 0.75rem 1.5rem !important;
+}
