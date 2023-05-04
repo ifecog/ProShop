@@ -1,15 +1,11 @@
 import React from 'react'
 import { Alert } from 'react-bootstrap'
 
-function Message() {
+function Message({ variant, children }) {
   return (
-    <>
-      {'danger'.map((variant) => (
-        <Alert key={variant} variant={variant}>
-          This is a {variant} alert—check it out!
-        </Alert>
-      ))}
-    </>
+    <Alert variant={variant}>
+      {children}
+    </Alert>
   )
 }
 
