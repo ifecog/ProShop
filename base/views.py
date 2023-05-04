@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Product
-from .serializers import ProductSerializer, MyTokenObtainPairSerializer
+from .serializers import ProductSerializer, UserSerializer, MyTokenObtainPairSerializer
 from .products import products
 
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -34,6 +34,14 @@ def get_product_detail(request, pk):
     #     if i['_id'] == pk:
     #         product = i
     #         break
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getUserProfile(request):
+    user = request.user
+    serializer = UserSerializer(user, many=False)
+
     return Response(serializer.data)
 
 
