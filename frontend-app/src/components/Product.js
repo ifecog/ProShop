@@ -19,7 +19,7 @@ function Product({ product }) {
 
             <Card.Text as='div'>
                 <div className='my-3'>
-                    <Rating value={product.rating} text={<div style={{ whiteSpace: "pre-wrap" }}>{`${product.num_reviews} reviews`}</div>} color={'#f8e825'} />
+                    <Rating value={product.rating} text={<div style={{ whiteSpace: 'pre-wrap' }}>{`${product.num_reviews} reviews`}</div>} color={'#f8e825'} />
                 </div>
             </Card.Text>
 
