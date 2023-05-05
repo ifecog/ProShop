@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from .models import Product
 from .serializers import ProductSerializer, UserSerializer, MyTokenObtainPairSerializer
 from .products import products
-
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 # Create your views here.
@@ -18,9 +19,17 @@ def get_routes(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAdminUser])
+def get_users(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def get_products(request):
-    product = Product.objects.all()
-    serializer = ProductSerializer(product, many=True)
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
 
@@ -32,6 +41,7 @@ def get_product_detail(request, pk):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
