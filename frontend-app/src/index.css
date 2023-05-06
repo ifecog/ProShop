@@ -23,3 +23,7 @@ h3 {
 .form-select-override {
   padding: 0.5rem 0.5rem 0.75rem 1.5rem !important;
 }
+
+/* form.label {
+  font-weight: bold;
+} */
