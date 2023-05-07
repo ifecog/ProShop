@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
 
 function ProfileScreen() {
     const [firstName, setFirstName] = useState('')
@@ -31,12 +31,12 @@ function ProfileScreen() {
         if(!userInfo){
             navigate('/login')
         }else {
-            if(!user || !user.name) {
+            if(!user || !user.first_name) {
                 dispatch(getUserDetails('profile'))
             }
             else {
-                setFirstName(user.firstName)
-                setLastName(user.lastName)
+                setFirstName(user.first_name)
+                // setLastName(user.lastName)
                 setEmail(user.email)
             }
         }
@@ -48,7 +48,10 @@ function ProfileScreen() {
         if(password !== confirmPassword) {
             setMessage('Passwords do not match')
         }else{
-            console.log('Updating...')
+            dispatch(updateUserProfile({
+                'id':user._id,
+                'first_name': firstName
+            }))
         }
     }
 
