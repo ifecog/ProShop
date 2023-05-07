@@ -68,7 +68,7 @@ function LoginScreen() {
             <Col>
                 New Customer? <Link
                 to={redirect ? `/register?redirect=${redirect}` : '/register'} style={{ textDecoration: 'none' }}>
-                    Register
+                    Sign Up
                 </Link>
             </Col>
         </Row>

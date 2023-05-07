@@ -17,7 +17,7 @@ from base.serializers import UserSerializer, UserSerializerwithToken, MyTokenObt
 def get_users(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
-    
+
     return Response(serializer.data)
 
 
@@ -29,12 +29,12 @@ def register_user(request):
         user = User.objects.create_user(
             first_name=data['first_name'],
             last_name=data['last_name'],
-            username=data['username'],
+            username=data['email'],
             email=data['email'],
             password=make_password(data['password'])
         )
         serializer = UserSerializerwithToken(user, many=False)
-        
+
         return Response(serializer.data)
     except:
         message = {'detail': 'user with this email already exists'}

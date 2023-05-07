@@ -8,18 +8,21 @@ import Loader from '../components/Loader'
 import { register } from '../actions/userActions'
 
 function RegisterScreen() {
-    const [name, setName] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [message, setMessage] = useState('')
 
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const redirect = location.search ? location.search.split('=')[1] : '/'
+    const redirect = location.search ? location.search.split('=')[1] : '/' 
 
-    const userLogin = useSelector(state => state.userLogin)
-    const { error, loading, userInfo } = userLogin
+    const userRegister = useSelector(state => state.userRegister)
+    const { error, loading, userInfo } = userRegister
 
     useEffect(() => {
         if(userInfo){
@@ -29,12 +32,96 @@ function RegisterScreen() {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(login(email, password))
+
+        if(password !== confirmPassword) {
+            setMessage('Passwords do not match')
+        }else{
+            dispatch(register(firstName, lastName, email, password))
+        }
+    }
 
   return (
-    <div>
-      
-    </div>
+    <FormContainer>
+      <h1>Sign Up</h1>
+      {message && <Message variant='danger'>{message}</Message>}
+      {error && <Message variant='danger'>{error}</Message>}
+      {loading && <Loader />}
+      <Form onSubmit={submitHandler}>
+
+        <Form.Group controlId='firstName' className='py-3'>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+                required
+                type='name'
+                placeholder='enter name'
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+            >
+            </Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId='lastName' className='py-3'>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+                required
+                type='name'
+                placeholder='enter name'
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+            >
+            </Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId='email' className='py-3'>
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+                required
+                type='email'
+                placeholder='enter email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            >
+            </Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId='password' className='py-3'>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+                required
+                type='password'
+                placeholder='enter password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            >
+            </Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId='passwordConfirm' className='py-3'>
+            <Form.Label> Confirm Password</Form.Label>
+            <Form.Control
+                required
+                type='password'
+                placeholder='confirm password'
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+            >
+            </Form.Control>
+        </Form.Group>
+        
+        <Button type='submit' variant='primary'>
+            Sign Up
+        </Button>
+
+        <Row className='py-3'>
+            <Col>
+                Have an account? <Link
+                to={redirect ? `/login?redirect=${redirect}` : '/login'} style={{ textDecoration: 'none' }}>
+                    Login
+                </Link>
+            </Col>
+        </Row>
+      </Form>
+    </FormContainer>
   )
 }
 
