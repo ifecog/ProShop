@@ -49,11 +49,11 @@ function RegisterScreen() {
       <Form onSubmit={submitHandler}>
 
         <Form.Group controlId='firstName' className='py-3'>
-            <Form.Label>Name</Form.Label>
+            <Form.Label>First Name</Form.Label>
             <Form.Control
                 required
                 type='name'
-                placeholder='enter name'
+                placeholder='enter first name'
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
             >
@@ -61,11 +61,11 @@ function RegisterScreen() {
         </Form.Group>
 
         <Form.Group controlId='lastName' className='py-3'>
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Last Name</Form.Label>
             <Form.Control
                 required
                 type='name'
-                placeholder='enter name'
+                placeholder='enter last name'
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
             >
