@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 function ProfileScreen() {
     const [firstName, setFirstName] = useState('')
@@ -15,11 +16,8 @@ function ProfileScreen() {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState('')
 
-    const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
-    const redirect = location.search ? location.search.split('=')[1] : '/' 
 
     const userDetails = useSelector(state => state.userDetails)
     const { error, loading, user } = userDetails
@@ -27,20 +25,24 @@ function ProfileScreen() {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+    const { success } = userUpdateProfile
+
     useEffect(() => {
         if(!userInfo){
             navigate('/login')
         }else {
-            if(!user || !user.first_name) {
+            if(!user || !user.name || success) {
+                dispatch({ type:USER_UPDATE_PROFILE_RESET })
                 dispatch(getUserDetails('profile'))
             }
             else {
                 setFirstName(user.first_name)
-                // setLastName(user.lastName)
+                setLastName(user.last_name)
                 setEmail(user.email)
             }
         }
-    }, [navigate, userInfo, user, dispatch])
+    }, [navigate, userInfo, user, dispatch, success])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -50,7 +52,10 @@ function ProfileScreen() {
         }else{
             dispatch(updateUserProfile({
                 'id':user._id,
-                'first_name': firstName
+                'first_name': firstName,
+                'last_name': lastName,
+                'email': email,
+                'password': password,
             }))
         }
     }
