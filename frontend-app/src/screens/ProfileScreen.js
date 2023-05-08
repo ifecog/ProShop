@@ -75,7 +75,7 @@ function ProfileScreen() {
                 <Form.Control
                 required
                 type='name'
-                placeholder='enter first name'
+                placeholder='first name (reset?)'
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 >
@@ -87,7 +87,7 @@ function ProfileScreen() {
                 <Form.Control
                 required
                 type='name'
-                placeholder='enter last name'
+                placeholder='last name (reset?)'
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 >
@@ -99,7 +99,7 @@ function ProfileScreen() {
                 <Form.Control
                 required
                 type='email'
-                placeholder='enter email'
+                placeholder='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 >
@@ -110,7 +110,7 @@ function ProfileScreen() {
                 <Form.Label>Password</Form.Label>
                 <Form.Control                
                 type='password'
-                placeholder='enter password'
+                placeholder='password (reset?)'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 >
