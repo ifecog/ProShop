@@ -40,7 +40,7 @@ function ProductScreen() {
 
             <Col md={3}>
               <ListGroup variant='flush'>
-                <ListGroup.Item style={{ textDecoration: 'none' }}>
+                <ListGroup.Item className='list-group-item-no-decoration'>
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
 

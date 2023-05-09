@@ -24,6 +24,11 @@ h3 {
   padding: 0.5rem 0.5rem 0.75rem 1.5rem !important;
 }
 
+.list-group-item-no-decoration {
+  text-decoration: none;
+}
+
+
 /* form.label {
   font-weight: bold;
 } */
