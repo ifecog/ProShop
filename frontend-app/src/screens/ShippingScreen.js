@@ -44,7 +44,7 @@ function ShippingScreen() {
             <Form.Label>Country</Form.Label>
             <Form.Control
                 required
-                type='text'
+                type='text'     
                 placeholder='enter country'
                 value={country ? country : ''}
                 onChange={(e) => setCountry(e.target.value)}
