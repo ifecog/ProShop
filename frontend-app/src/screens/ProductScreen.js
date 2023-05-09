@@ -108,8 +108,16 @@ function ProductScreen() {
                     </ListGroup.Item>
                   )}
 
-                  <ListGroup.Item className='text-center'>
-                    <Button onClick={addToCartHandler} className='btn-block' disabled={product.count_in_stock === 0} type='button'>Add to Cart</Button>
+                  <ListGroup.Item>
+                    <Button
+                      onClick={addToCartHandler} className='btn-block'
+                      disabled={product.count_in_stock === 0} type='button'
+                      style={{width: "100%"}}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        Add to Cart
+                      </div>
+                    </Button>
                   </ListGroup.Item>
                 </ListGroup>
               </Card>

@@ -32,7 +32,7 @@ function PlaceOrderScreen() {
                             <ListGroup variant='flush'>
                                 {cart.cartItems.map((item, index) => (
                                     <ListGroup.Item key={index}>
-                                        <Row>
+                                        <Row className='align-items-center'>
                                             <Col md={2}>
                                                 <Link to={`/product/${item.product}`}>
                                                     <Image src={item.image} alt={item.name} fluid rounded />
@@ -42,6 +42,9 @@ function PlaceOrderScreen() {
                                                 <Link to={`/product/${item.product}`} className='list-group-item-no-decoration'>
                                                     {item.name}
                                                 </Link>
+                                            </Col>
+                                            <Col md={4}>
+                                                {item.qty} x ${item.price} = ${(item.qty * item.price).toFixed(2)}
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
@@ -55,6 +58,50 @@ function PlaceOrderScreen() {
             </Col>
 
             <Col md={4}>
+                <Card>
+                    <ListGroup variant='flush'>
+                        <ListGroup.Item>
+                            <h2>Order Summary</h2>
+                        </ListGroup.Item>
+
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Items: </Col>
+                                <Col md={4}>kjkjsd</Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Shipping: </Col>
+                                <Col md={4}>kjkjsd</Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Tax: </Col>
+                                <Col md={4}>kjkjsd</Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Total: </Col>
+                                <Col md={4}>kjkjsd</Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Button 
+                                className='btn-block'
+                                style={{width: "100%"}} type='button'
+                                variant='primary'
+                            >
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                    Order
+                                </div>
+                            </Button>
+                        </ListGroup.Item>
+                        
+                    </ListGroup>
+                </Card>
 
             </Col>
         </Row>

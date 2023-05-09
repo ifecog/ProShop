@@ -95,9 +95,17 @@ function CartScreen() {
               <h3>SubTotal({cartItems.reduce((acc, item) => acc + item.qty, 0)} items)</h3>
               ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
             </ListGroup.Item>
-            <ListGroup.Item className='text-center'>
-              <Button onClick={checkoutHandler} type='button' className='btn-block' disabled={cartItems.length === 0}>
-                Proceed to Checkout
+            <ListGroup.Item>
+              <Button
+               onClick={checkoutHandler}
+               type='button'
+               style={{width: "100%"}}
+               className='btn-block'
+               disabled={cartItems.length === 0}
+              >
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                  Proceed to Checkout
+                </div>
               </Button>
             </ListGroup.Item>
           </ListGroup>
