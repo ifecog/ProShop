@@ -4,17 +4,31 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import Loader from '../components/Loader'
+import { saveShippingAddress } from '../actions/cartActions'
 
 function ShippingScreen() {
-  const [country, setCountry] = useState('')
-  const [city, setCity] = useState('')
-  const [address, setAddress] = useState('')
-  const [postalCode, setPostalCode] = useState('')
+
+  const cart = useSelector(state => state.cart)
+  const { shippingAddress } = cart
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [country, setCountry] = useState(shippingAddress.country)
+  const [city, setCity] = useState(shippingAddress.city)
+  const [address, setAddress] = useState(shippingAddress.address)
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+
+
+  const location = useLocation()
+
+  const redirect = location.search ? location.search.split('=')[1] : '/' 
+
 
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log('Submitted')
+    dispatch(saveShippingAddress({ country, city, address, postalCode }))
+    navigate('/payment')
   }
 
 
@@ -24,75 +38,63 @@ function ShippingScreen() {
       <h1>Shipping</h1>
       <Form onSubmit={submitHandler}>
 
-        <Form.Group controlId='firstName' className='py-3'>
+        <Form.Group controlId='country' className='py-3'>
             <Form.Label>Country</Form.Label>
             <Form.Control
                 required
-                type='name'
-                placeholder='enter first name'
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                type='text'
+                placeholder='enter country'
+                value={country ? country : ''}
+                onChange={(e) => setCountry(e.target.value)}
             >
             </Form.Control>
         </Form.Group>
 
-        <Form.Group controlId='lastName' className='py-3'>
-            <Form.Label>Last Name</Form.Label>
+        <Form.Group controlId='city' className='py-3'>
+            <Form.Label>City</Form.Label>
             <Form.Control
                 required
-                type='name'
-                placeholder='enter last name'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                type='text'
+                placeholder='enter city name'
+                value={city ? city : ''}
+                onChange={(e) => setCity(e.target.value)}
             >
             </Form.Control>
         </Form.Group>
 
-        <Form.Group controlId='email' className='py-3'>
-            <Form.Label>Email</Form.Label>
+        <Form.Group controlId='address' className='py-3'>
+            <Form.Label>Address</Form.Label>
             <Form.Control
                 required
-                type='email'
-                placeholder='enter email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type='text'
+                placeholder='enter address'
+                value={address ? address : ''}
+                onChange={(e) => setAddress(e.target.value)}
             >
             </Form.Control>
         </Form.Group>
 
-        <Form.Group controlId='password' className='py-3'>
-            <Form.Label>Password</Form.Label>
+        <Form.Group controlId='postalCode' className='py-3'>
+            <Form.Label>Postal Code</Form.Label>
             <Form.Control
                 required
-                type='password'
-                placeholder='enter password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                type='text'
+                placeholder='enter postal code'
+                value={postalCode ? postalCode : ''}
+                onChange={(e) => setPostalCode(e.target.value)}
             >
             </Form.Control>
         </Form.Group>
-
-        <Form.Group controlId='passwordConfirm' className='py-3'>
-            <Form.Label> Confirm Password</Form.Label>
-            <Form.Control
-                required
-                type='password'
-                placeholder='confirm password'
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-            >
-            </Form.Control>
-        </Form.Group>
-        
+      
         <Button type='submit' variant='primary'>
-            Sign Up
+            Continue
         </Button>
 
         <Row className='py-3'>
             <Col>
-                Have an account? <Link
-                to={redirect ? `/login?redirect=${redirect}` : '/login'} style={{ textDecoration: 'none' }}>
-                    Login
+                Want to add more items before shipping? <Link
+                to={redirect ? `/cart?redirect=${redirect}` : '/cart'} style={{ textDecoration: 'none' }}>
+                    Cart
                 </Link>
             </Col>
         </Row>

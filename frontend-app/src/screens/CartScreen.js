@@ -29,7 +29,7 @@ function CartScreen() {
   }
 
   const checkoutHandler = () => {
-    navigate('/login?redirect=shipping')
+    navigate('/shipping')
   }
 
   return (
@@ -92,7 +92,7 @@ function CartScreen() {
         <Card>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>SubTotal({cartItems.reduce((acc, item) => acc + item.qty, 0)} items)</h2>
+              <h3>SubTotal({cartItems.reduce((acc, item) => acc + item.qty, 0)} items)</h3>
               ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
             </ListGroup.Item>
             <ListGroup.Item className='text-center'>
