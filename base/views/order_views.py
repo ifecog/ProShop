@@ -12,7 +12,7 @@ from rest_framework import status
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def add_order_items(request):
+def addOrderItems(request):
     user = request.user
     data = request.data
 
@@ -26,10 +26,10 @@ def add_order_items(request):
         # 1. create order
         order = Order.objects.create(
             user=user,
-            payment_method=data['paymentMethod'],
-            tax_price=data['taxPrice'],
-            shpping_price=data['shippingPrice'],
-            total_price=data['totalPrice'],
+            paymentMethod=data['paymentMethod'],
+            taxPrice=data['taxPrice'],
+            shppingPrice=data['shippingPrice'],
+            totalPrice=data['totalPrice'],
 
         )
 
