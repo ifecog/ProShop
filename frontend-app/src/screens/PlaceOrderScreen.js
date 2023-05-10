@@ -129,10 +129,6 @@ function PlaceOrderScreen() {
                             </Row>
                         </ListGroup.Item>
                         
-                        {/* <ListGroup.Item>
-                            {error && <Message variant='danger'>{error}</Message>}
-                        </ListGroup.Item> */}
-
                         <ListGroup.Item>
                             <Button 
                                 className='btn-block'
@@ -149,6 +145,11 @@ function PlaceOrderScreen() {
                         
                     </ListGroup>
                 </Card>
+                <ListGroup variant='flush'>
+                    <ListGroup.Item>
+	                    {error && <Message variant='danger'>{error}</Message>}
+                    </ListGroup.Item>
+                </ListGroup>
 
             </Col>
         </Row>
