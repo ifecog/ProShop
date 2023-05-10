@@ -91,7 +91,7 @@ class OrderSerializer(serializers.ModelSerializer):
     def get_shippingAddress(self, obj):
         try:
             address = ShippingAddressSerializer(
-                obj.shippingAddress, many=False)
+                obj.shippingaddress, many=False)
         except:
             address = False
 
@@ -99,6 +99,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_user(self, obj):
         user = obj.user
-        serializer = UserSerializer(many=False)
+        serializer = UserSerializer(user, many=False)
 
         return serializer.data
