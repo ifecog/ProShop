@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Product, Order, OrderItem, ShippingAddress
-from base.serializers import ProductSerializer
+from base.serializers import ProductSerializer, OrderSerializer
 
 from rest_framework import status
 
@@ -16,7 +16,7 @@ def add_order_items(request):
     user = request.user
     data = request.data
 
-    order_items = data['OrderItem']
+    order_items = data['orderItems']
 
     if order_items and len(order_items) == 0:
         message = {'detail': 'No Order Items'}
@@ -29,11 +29,36 @@ def add_order_items(request):
             payment_method=data['paymentMethod'],
             tax_price=data['taxFee'],
             shpping_price=data['shippingFee'],
-            total_proce=data['totalFee'],
+            total_price=data['totalFee'],
 
         )
-        # 2. create shipping address
-        # 3. create order items and set order to orderItem relationship
-        # 4. update stock
 
-    return Response('ORDER')
+        # 2. create shipping address
+        shipping_address = ShippingAddress.objects.create(
+            order=order,
+            country=data['shippingAddress']['country'],
+            city=data['shippingAddress']['city'],
+            address=data['shippingAddress']['address'],
+            postal_code=data['shippingAddress']['postalCode']
+        )
+
+        # 3. create order items and set order to orderItem relationship
+        for i in order_items:
+            product = Product.object.get(_id=i['product'])
+
+            item = OrderItem.objects.create(
+                product=product,
+                order=order,
+                name=product.name,
+                qty=i['qty'],
+                price=i['price'],
+                image=product.image.url
+            )
+
+        # 4. update stock
+        product.count_in_stock -= item.qty
+        product.save()
+
+    serializer = OrderSerializer(order, many=False)
+
+    return Response(serializer.data)
