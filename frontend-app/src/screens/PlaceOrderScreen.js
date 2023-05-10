@@ -3,25 +3,49 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { ListGroup, Button, Row, Col, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
+import { createOrder } from '../actions/orderActions'
 
 function PlaceOrderScreen() {
-    const cart = useSelector(state => state.cart)
+    const orderCreate = useSelector(state => state.orderCreate)
+    const { order, error, success } = orderCreate
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const cart = useSelector(state => state.cart)
+  
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
 
 //   I assume free shipping for a total price > $500, else $10 fee
-    cart.shippingFee = (cart.itemsPrice > 500 ? 0 : 10).toFixed(2)
+    cart.shippingPrice = (cart.itemsPrice > 500 ? 0 : 10).toFixed(2)
 
 //    assuming a 8% sales tax
-    cart.taxFee = Number((0.08)  * cart.itemsPrice).toFixed(2)
+    cart.taxPrice = Number((0.08)  * cart.itemsPrice).toFixed(2)
 
-    cart.totalFee = (Number(cart.itemsPrice) + Number(cart.shippingFee) + Number(cart.taxFee)).toFixed(2)
+    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
+
+    if (!cart.paymentMethod) {
+        navigate('/payment')
+    }
+
+    useEffect(() => {
+        if (success && order) {
+            navigate(`/order/${order._id}`)
+        }
+    }, [navigate, order, success])
 
 
    const placeOrder = () => {
-    console.log('Place orders')
+    dispatch(createOrder({
+        orderItems:cart.cartItems,
+        shippingAddress:cart.shippingAddress,
+        paymentMethod:cart.paymentMethod,
+        itemsPrice:cart.itemsPrice,
+        shippingPrice:cart.shippingPrice,
+        taxPrice:cart.taxPrice,
+        totalFee:cart.totalPrice       
+    }))
    }
 
 
@@ -88,21 +112,26 @@ function PlaceOrderScreen() {
                         <ListGroup.Item>
                             <Row>
                                 <Col>Shipping: </Col>
-                                <Col md={4}>${cart.shippingFee}</Col>
+                                <Col md={4}>${cart.shippingPrice}</Col>
                             </Row>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <Row>
                                 <Col>Tax: </Col>
-                                <Col md={4}>${cart.taxFee}</Col>
+                                <Col md={4}>${cart.taxPrice}</Col>
                             </Row>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <Row>
                                 <Col>Total: </Col>
-                                <Col md={4}>${cart.totalFee}</Col>
+                                <Col md={4}>${cart.totalPrice}</Col>
                             </Row>
                         </ListGroup.Item>
+                        
+                        {/* <ListGroup.Item>
+                            {error && <Message variant='danger'>{error}</Message>}
+                        </ListGroup.Item> */}
+
                         <ListGroup.Item>
                             <Button 
                                 className='btn-block'
@@ -112,7 +141,7 @@ function PlaceOrderScreen() {
                                 onClick={placeOrder}
                             >
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                                    Order
+                                    Place Order
                                 </div>
                             </Button>
                         </ListGroup.Item>

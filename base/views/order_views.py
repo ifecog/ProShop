@@ -11,14 +11,14 @@ from rest_framework import status
 
 
 @api_view(['POST'])
-@permission_classes(['IsAuthenticated'])
+@permission_classes([IsAuthenticated])
 def add_order_items(request):
     user = request.user
     data = request.data
 
-    order_items = data['orderItems']
+    orderItems = data['orderItems']
 
-    if order_items and len(order_items) == 0:
+    if orderItems and len(orderItems) == 0:
         message = {'detail': 'No Order Items'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
@@ -27,14 +27,14 @@ def add_order_items(request):
         order = Order.objects.create(
             user=user,
             payment_method=data['paymentMethod'],
-            tax_price=data['taxFee'],
-            shpping_price=data['shippingFee'],
-            total_price=data['totalFee'],
+            tax_price=data['taxPrice'],
+            shpping_price=data['shippingPrice'],
+            total_price=data['totalPrice'],
 
         )
 
         # 2. create shipping address
-        shipping_address = ShippingAddress.objects.create(
+        shippingAddress = ShippingAddress.objects.create(
             order=order,
             country=data['shippingAddress']['country'],
             city=data['shippingAddress']['city'],
