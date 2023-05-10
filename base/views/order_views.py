@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Product, Order, OrderItem, ShippingAddress
-from base.serializers import ProductSerializer, OrderSerializer
+from base.serializers import OrderSerializer
 
 from rest_framework import status
 
@@ -28,23 +28,23 @@ def addOrderItems(request):
             user=user,
             paymentMethod=data['paymentMethod'],
             taxPrice=data['taxPrice'],
-            shppingPrice=data['shippingPrice'],
+            shippingPrice=data['shippingPrice'],
             totalPrice=data['totalPrice'],
 
         )
 
         # 2. create shipping address
-        shippingAddress = ShippingAddress.objects.create(
+        shipping = ShippingAddress.objects.create(
             order=order,
             country=data['shippingAddress']['country'],
             city=data['shippingAddress']['city'],
             address=data['shippingAddress']['address'],
-            postal_code=data['shippingAddress']['postalCode']
+            postalCode=data['shippingAddress']['postalCode']
         )
 
         # 3. create order items and set order to orderItem relationship
-        for i in order_items:
-            product = Product.object.get(_id=i['product'])
+        for i in orderItems:
+            product = Product.objects.get(_id=i['product'])
 
             item = OrderItem.objects.create(
                 product=product,
@@ -55,10 +55,10 @@ def addOrderItems(request):
                 image=product.image.url
             )
 
-        # 4. update stock
-        product.count_in_stock -= item.qty
-        product.save()
+            # 4. update stock
+            product.count_in_stock -= item.qty
+            product.save()
 
-    serializer = OrderSerializer(order, many=False)
+        serializer = OrderSerializer(order, many=False)
 
-    return Response(serializer.data)
+        return Response(serializer.data)

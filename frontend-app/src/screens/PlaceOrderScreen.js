@@ -37,6 +37,7 @@ function PlaceOrderScreen() {
 
 
    const placeOrder = () => {
+    // console.log('jkjkjkjkk')
     dispatch(createOrder({
         orderItems:cart.cartItems,
         shippingAddress:cart.shippingAddress,
@@ -44,7 +45,7 @@ function PlaceOrderScreen() {
         itemsPrice:cart.itemsPrice,
         shippingPrice:cart.shippingPrice,
         taxPrice:cart.taxPrice,
-        totalFee:cart.totalPrice       
+        totalPrice:cart.totalPrice       
     }))
    }
 
