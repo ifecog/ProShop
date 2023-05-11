@@ -88,7 +88,7 @@ import {
      
     }catch (error) {
         dispatch({
-            type: ORDER_DETAIL_FAIL,
+            type: ORDER_DETAILS_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,

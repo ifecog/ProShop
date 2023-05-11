@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { ListGroup, Button, Row, Col, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -39,7 +39,6 @@ function PlaceOrderScreen() {
 
 
    const placeOrder = () => {
-    // console.log('jkjkjkjkk')
     dispatch(createOrder({
         orderItems:cart.cartItems,
         shippingAddress:cart.shippingAddress,
