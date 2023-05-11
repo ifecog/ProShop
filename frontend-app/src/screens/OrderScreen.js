@@ -40,7 +40,7 @@ function OrderScreen() {
             <Col md={8}>
                 <ListGroup variant='flush'>
                     <ListGroup.Item>
-                        <h2>Details</h2>
+                        <h2>Delivery Details</h2>
                         <p><strong>Name: {order.user.name}</strong></p>
                         <p><strong><a href={`mailto:${order.user.email}`} className='list-group-item-no-decoration'>Email: {order.user.email}</a></strong></p>
                         <p>Shipping Address: {order.shippingAddress.address + ', ' + order.shippingAddress.city + ' ' + order.shippingAddress.postalCode + ', ' + order.shippingAddress.country + '.'}</p>
