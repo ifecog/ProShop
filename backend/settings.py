@@ -180,4 +180,5 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
