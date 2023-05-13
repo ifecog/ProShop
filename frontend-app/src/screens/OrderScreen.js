@@ -10,6 +10,8 @@ function OrderScreen() {
     const { id } = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const [sdkReady, setSdkReady] = useState(false)
     
     const orderId = id
 
@@ -21,8 +23,14 @@ function OrderScreen() {
         order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
     }
 
-    const addPayPalScripts = () => {
+    const addPayPalScript = () => {
         const script = document.createElement('script')
+        script.type = 'text/javascript'
+        script.src = '<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script>'
+        script.async = true
+        script.onload = () => {
+            setSdkReady(true)
+        }
     }
 
     useEffect(() => {
