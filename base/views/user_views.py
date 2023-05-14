@@ -72,5 +72,13 @@ def update_user_profile(request):
     return Response(serializer.data)
 
 
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteUser(request, pk):
+    user_delete = User.objects.get(_id=pk)
+    user_delete.delete()
+    return Response('User Deleted!')
+
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer

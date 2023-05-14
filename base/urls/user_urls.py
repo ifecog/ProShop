@@ -8,4 +8,5 @@ urlpatterns = [
          name='token_obtain_pair'),
     path('profile/', views.get_user_profile, name='user-profile'),
     path('profile/update/', views.update_user_profile, name='update-user-profile'),
+    path('delete/<str:pk>/', views.deleteUser, name='delete-user'),
 ]
