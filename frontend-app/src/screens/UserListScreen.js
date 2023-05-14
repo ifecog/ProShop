@@ -10,13 +10,21 @@ import { listUsers } from '../actions/userActions'
 function UserListScreen() {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const userList = useSelector(state => state.userList)
     const { loading, error, users } = userList
 
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+
     useEffect(() => {
-        dispatch(listUsers())
-    }, [dispatch])
+        if (userInfo && userInfo.isAdmin) {
+            dispatch(listUsers())
+        }else {
+            navigate('/login')
+        }
+    }, [ dispatch, userInfo, navigate ])
     
     const deleteHandler = () => {
         console.log('kjjjdk')
