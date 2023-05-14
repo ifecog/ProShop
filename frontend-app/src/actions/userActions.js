@@ -213,7 +213,7 @@ export const listUsers = () => async (dispatch, getState) => {
             }
         }
 
-        const { data } = await axios.put(
+        const { data } = await axios.get(
             '/api/users/',
             config
         ) 
