@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from base.models import Product
@@ -23,3 +24,12 @@ def get_product_detail(request, pk):
     serializer = ProductSerializer(product, many=False)
     
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def productDelete(request, pk):
+    product_delete = Product.objects.get(_id=pk)
+    product_delete.delete()
+    
+    return Response('Product was successfully deleted')
+
