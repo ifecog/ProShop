@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate, useLocation, useParams } from "react-router-dom"
 import { LinkContainer } from "react-router-bootstrap"
 import { Table, Button, Row, Col } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import { listProducts } from "../actions/productActions"
+import { listProducts, deleteProduct } from "../actions/productActions"
 
 function ProductListScreen() {
   const dispatch = useDispatch()
@@ -13,6 +13,13 @@ function ProductListScreen() {
 
   const productList = useSelector((state) => state.productList)
   const { loading, error, products } = productList
+
+  const productDelete = useSelector((state) => state.productDelete)
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = productDelete
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -23,19 +30,19 @@ function ProductListScreen() {
     } else {
       navigate("/login")
     }
-  }, [dispatch, userInfo, navigate])
+  }, [dispatch, userInfo, successDelete, navigate])
 
-  const createProductHandler = () => {
+  const createProductHandler = (id) => {
     console.log("Product")
     // if (window.confirm("Are you sure you want to delete this user?")) {
     //   dispatch(deleteUser(id))
     // }
   }
 
-  const deleteHandler = () => {
-    // if (window.confirm("Are you sure you want to delete this user?")) {
-    //   dispatch(deleteUser(id))
-    // }
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      dispatch(deleteProduct(id))
+    }
   }
 
   return (
@@ -51,6 +58,8 @@ function ProductListScreen() {
           </Button>
         </Col>
       </Row>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
