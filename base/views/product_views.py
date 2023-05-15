@@ -25,6 +25,25 @@ def get_product_detail(request, pk):
     
     return Response(serializer.data)
 
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def createProduct(request, pk):
+    user = request.user
+    product = Product.objects.create(
+        user=user,
+        name='Sample Name',
+        price=0,
+        brand='Samble Brand',
+        count_in_stock=0,
+        category='Sample Category',
+        description=''
+    )
+    serializer = ProductSerializer(product, many=False)
+    
+    return Response(serializer.data)
+
+
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
 def productDelete(request, pk):
