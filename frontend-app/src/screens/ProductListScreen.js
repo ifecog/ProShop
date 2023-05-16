@@ -5,7 +5,12 @@ import { Table, Button, Row, Col } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import { listProducts, deleteProduct } from "../actions/productActions"
+import {
+  listProducts,
+  deleteProduct,
+  createProduct,
+} from "../actions/productActions"
+import { PRODUCT_CREATE_RESET } from "../constants/productConstants"
 
 function ProductListScreen() {
   const dispatch = useDispatch()
@@ -21,19 +26,45 @@ function ProductListScreen() {
     success: successDelete,
   } = productDelete
 
+  const productCreate = useSelector((state) => state.productCreate)
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    product: createdProduct,
+  } = productCreate
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts())
-    } else {
+    dispatch({ type: PRODUCT_CREATE_RESET })
+    if (!userInfo.isAdmin) {
       navigate("/login")
     }
-  }, [dispatch, userInfo, successDelete, navigate])
+    // if (userInfo && userInfo.isAdmin) {
+    //   dispatch(listProducts())
+    // } else {
+    //   navigate("/login")
+    // }
 
-  const createProductHandler = (id) => {
-    console.log("Product")
+    if (successCreate) {
+      navigate(`/admin/product/${createdProduct._id}/edit`)
+    } else {
+      dispatch(listProducts())
+    }
+  }, [
+    dispatch,
+    userInfo,
+    successCreate,
+    createdProduct,
+    successDelete,
+    navigate,
+  ])
+
+  const createProductHandler = () => {
+    dispatch(createProduct())
+    // console.log("Product")
     // if (window.confirm("Are you sure you want to delete this user?")) {
     //   dispatch(deleteUser(id))
     // }
@@ -60,6 +91,10 @@ function ProductListScreen() {
       </Row>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+
+      {loadingCreate && <Loader />}
+      {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+
       {loading ? (
         <Loader />
       ) : error ? (
@@ -86,7 +121,7 @@ function ProductListScreen() {
                 <td>{product.brand}</td>
                 <td>{product.price}</td>
                 <td>
-                  <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                  <LinkContainer to={`/admin/product/${product.id}/edit`}>
                     <Button variant='success' className='btn-sm'>
                       <i className='fas fa-edit'></i>
                     </Button>
