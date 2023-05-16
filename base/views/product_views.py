@@ -28,17 +28,35 @@ def get_product_detail(request, pk):
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
-def createProduct(request, pk):
+def createProduct(request):
     user = request.user
     product = Product.objects.create(
         user=user,
         name='Sample Name',
         price=0,
-        brand='Samble Brand',
+        brand='Sample Brand',
         count_in_stock=0,
         category='Sample Category',
-        description=''
+        description='',
     )
+    serializer = ProductSerializer(product, many=False)
+    
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateProduct(request, pk):
+    product = Product.objects.get(id=pk)
+    data = request.request.data
+    
+    # update fields
+    product.name=data['name']
+    product.price=data['price']
+    product.brand=data['brand']
+    product.count_in_stock=data['count_in_stock']
+    product.category=data['category']
+    product.description=data['description']
+    
     serializer = ProductSerializer(product, many=False)
     
     return Response(serializer.data)
