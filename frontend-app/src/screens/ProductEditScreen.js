@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"
 import FormContainer from "../components/FormContainer"
 import Loader from "../components/Loader"
+import { listProductDetail, updateProduct } from "../actions/productActions"
+import { PRODUCT_UPDATE_RESET } from "../constants/productConstants"
 // import { getUserDetails, updateUser } from "../actions/userActions"
 // import { USER_UPDATE_RESET } from "../constants/userConstants"
 
@@ -15,17 +17,53 @@ function ProductEditScreen() {
   const dispatch = useDispatch()
 
   const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [price, setPrice] = useState("")
+  const [image, setImage] = useState("")
   const [category, setCategory] = useState("")
   const [brand, setBrand] = useState("")
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [countInStock, setCountInStock] = useState(0)
 
   const productId = id
 
+  const productDetails = useSelector((state) => state.productDetails)
+  const { error, loading, product } = productDetails
+
+  const productUpdate = useSelector((state) => state.productUpdate)
+  const {
+    error: errorUpdate,
+    loading: loadingUpdate,
+    success: successUpdate,
+  } = productUpdate
+
+  useEffect(() => {
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET })
+      navigate("/admin/productlist")
+    } else {
+      if (!product.name || product._id !== Number(productId)) {
+        dispatch(listProductDetail(productId))
+      } else {
+        setName(product.name)
+        setDescription(product.description)
+        setPrice(product.price)
+        setImage(product.image)
+        setBrand(product.brand)
+        setCategory(product.category)
+        setCountInStock(product.count_in_stock)
+      }
+    }
+  }, [dispatch, productId, product, navigate, successUpdate])
+
+  const submitHandler = (e) => {
+    console.log("submit")
+  }
+
   return (
     <div>
-      <Link to='/admin/userlist'>Go Back</Link>
+      <Link to='/admin/productlist'>Go Back</Link>
       <FormContainer>
-        <h1>Edit User</h1>
+        <h1>Edit Product</h1>
         {loading ? (
           <Loader />
         ) : error ? (
@@ -33,22 +71,42 @@ function ProductEditScreen() {
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId='firstName' className='py-3'>
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type='name'
-                placeholder='enter first name'
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                placeholder='enter name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
             <Form.Group controlId='lastName' className='py-3'>
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>Description</Form.Label>
               <Form.Control
                 type='name'
                 placeholder='enter last name'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='lastName' className='py-3'>
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='enter last name'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='lastName' className='py-3'>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='enter last name'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
