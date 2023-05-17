@@ -14,6 +14,11 @@ function ProductEditScreen() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [name, setName] = useState("")
+  const [category, setCategory] = useState("")
+  const [brand, setBrand] = useState("")
+  const [isAdmin, setIsAdmin] = useState(false)
+
   const productId = id
 
   return (
