@@ -7,8 +7,6 @@ import FormContainer from "../components/FormContainer"
 import Loader from "../components/Loader"
 import { listProductDetail, updateProduct } from "../actions/productActions"
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants"
-// import { getUserDetails, updateUser } from "../actions/userActions"
-// import { USER_UPDATE_RESET } from "../constants/userConstants"
 
 function ProductEditScreen() {
   const { id } = useParams()
