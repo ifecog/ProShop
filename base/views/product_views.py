@@ -63,7 +63,6 @@ def updateProduct(request, pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
 def imageUpload(request):
     data = request.data
     
