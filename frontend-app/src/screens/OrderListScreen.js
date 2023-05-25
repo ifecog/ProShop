@@ -63,9 +63,13 @@ function OrderListScreen() {
                 </td>
                 <td>
                   {order.isDelivered ? (
-                    order.deliveryTime.substring(0, 10)
+                    order.deliveryTime ? (
+                      order.deliveryTime.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-check' style={{ color: "red" }}></i>
+                    )
                   ) : (
-                    <i className='fas fa-check' style={{ color: "red" }}></i>
+                    "Not Delivered"
                   )}
                 </td>
                 <td>
