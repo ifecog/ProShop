@@ -121,7 +121,7 @@ function ProductListScreen() {
                 <td>{product.brand}</td>
                 <td>{product.price}</td>
                 <td>
-                  <LinkContainer to={`/admin/product/${product.id}/edit`}>
+                  <LinkContainer to={`/admin/product/${product._id}/edit`}>
                     <Button variant='success' className='btn-sm'>
                       <i className='fas fa-edit'></i>
                     </Button>

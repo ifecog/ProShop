@@ -16,16 +16,16 @@ function ProductEditScreen() {
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
-  const [price, setPrice] = useState("")
+  const [price, setPrice] = useState(0)
   const [image, setImage] = useState("")
   const [category, setCategory] = useState("")
   const [brand, setBrand] = useState("")
-  const [countInStock, setCountInStock] = useState(0)
+  const [count_in_stock, setCountInStock] = useState(0)
 
   const productId = id
 
-  const productDetails = useSelector((state) => state.productDetails)
-  const { error, loading, product } = productDetails
+  const productDetail = useSelector((state) => state.productDetail)
+  const { error, loading, product } = productDetail
 
   const productUpdate = useSelector((state) => state.productUpdate)
   const {
@@ -54,7 +54,19 @@ function ProductEditScreen() {
   }, [dispatch, productId, product, navigate, successUpdate])
 
   const submitHandler = (e) => {
-    console.log("submit")
+    e.preventDefault()
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        description,
+        price,
+        brand,
+        image,
+        category,
+        count_in_stock,
+      })
+    )
   }
 
   return (
@@ -62,13 +74,16 @@ function ProductEditScreen() {
       <Link to='/admin/productlist'>Go Back</Link>
       <FormContainer>
         <h1>Edit Product</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant='danger'>{error}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId='firstName' className='py-3'>
+            <Form.Group controlId='name' className='py-3'>
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type='name'
@@ -78,54 +93,64 @@ function ProductEditScreen() {
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='lastName' className='py-3'>
+            <Form.Group controlId='description' className='py-3'>
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type='name'
-                placeholder='enter last name'
+                type='text'
+                placeholder='enter description'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='lastName' className='py-3'>
+            <Form.Group controlId='price' className='py-3'>
               <Form.Label>Price</Form.Label>
               <Form.Control
-                type='name'
-                placeholder='enter last name'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                type='number'
+                placeholder='enter price'
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='lastName' className='py-3'>
-              <Form.Label>Description</Form.Label>
+            <Form.Group controlId='image' className='py-3'>
+              <Form.Label>Image</Form.Label>
               <Form.Control
                 type='name'
-                placeholder='enter last name'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                placeholder='select image'
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='email' className='py-3'>
-              <Form.Label>Email</Form.Label>
+            <Form.Group controlId='brand' className='py-3'>
+              <Form.Label>Brand</Form.Label>
               <Form.Control
-                type='email'
-                placeholder='enter email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type='text'
+                placeholder='enter brand'
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId='isadmin' className='py-3'>
-              <Form.Label>Password</Form.Label>
-              <Form.Check
-                type='checkbox'
-                label='Is Admin'
-                checked={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.checked)}
-              ></Form.Check>
+            <Form.Group controlId='category' className='py-3'>
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='enter category'
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='countInStock' className='py-3'>
+              <Form.Label>Stock</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='enter stock'
+                value={count_in_stock}
+                onChange={(e) => setCountInStock(e.target.value)}
+              ></Form.Control>
             </Form.Group>
 
             <Button type='submit' variant='primary'>

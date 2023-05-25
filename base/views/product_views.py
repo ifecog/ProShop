@@ -46,16 +46,16 @@ def createProduct(request):
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
 def updateProduct(request, pk):
-    product = Product.objects.get(id=pk)
-    data = request.request.data
+    product = Product.objects.get(_id=pk)
+    data = request.data
     
     # update fields
     product.name=data['name']
+    product.description=data['description']
     product.price=data['price']
     product.brand=data['brand']
-    product.count_in_stock=data['count_in_stock']
     product.category=data['category']
-    product.description=data['description']
+    product.count_in_stock=data['count_in_stock']
     
     serializer = ProductSerializer(product, many=False)
     
