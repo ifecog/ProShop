@@ -53,7 +53,6 @@ function OrderListScreen() {
                 <td>{order.user && order.user.name}</td>
                 <td>{order.createdTime.substring(0, 10)}</td>
                 <td>{order.totalPrice}</td>
-                <td>{order.deliveryTime.substring(0, 10)}</td>
                 <td>
                   {order.isPaid ? (
                     order.paymentTime.substring(0, 10)
@@ -63,13 +62,9 @@ function OrderListScreen() {
                 </td>
                 <td>
                   {order.isDelivered ? (
-                    order.deliveryTime ? (
-                      order.deliveryTime.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-check' style={{ color: "red" }}></i>
-                    )
+                    order.deliveryTime.substring(0, 10)
                   ) : (
-                    "Not Delivered"
+                    <i className='fas fa-check' style={{ color: "red" }}></i>
                   )}
                 </td>
                 <td>
