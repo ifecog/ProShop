@@ -4,8 +4,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
-from base.models import Product
+from base.models import Product, Review
 from base.serializers import ProductSerializer
+from rest_framework import status
 # from .products import products
 
 
@@ -61,6 +62,14 @@ def updateProduct(request, pk):
     
     return Response(serializer.data)
 
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def productDelete(request, pk):
+    product_delete = Product.objects.get(_id=pk)
+    product_delete.delete()
+    
+    return Response('Product was successfully deleted')
+
 
 @api_view(['POST'])
 def imageUpload(request):
@@ -75,11 +84,44 @@ def imageUpload(request):
     return Response('Image was successfully uploaded!')
 
 
-@api_view(['DELETE'])
-@permission_classes([IsAdminUser])
-def productDelete(request, pk):
-    product_delete = Product.objects.get(_id=pk)
-    product_delete.delete()
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createProductReview(request, pk):
+    user = request.user
+    product = Product.objects.get(_id=pk)
+    data = request.data
     
-    return Response('Product was successfully deleted')
+    # 1. Review already exists from a customer
+    already_exists = product.review_set.filter(user=user).exists()
+    
+    if already_exists:
+        message = {'details': 'Product already reviewed by user'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    # 2. No rating or 0 rating
+    elif data['rating'] == 0:
+        message = {'details': 'Please select a rating'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    # 3. Create rating
+    else:
+        review = Review.objects.create(
+            user=user,
+            product=product,
+            name=user.first_name,
+            rating=data['rating'],
+            comment=data['comment'],            
+        )
+        
+        reviews = product.review_set.all()
+        product.num_reviews = len(reviews)
+        
+        total = 0
+        for i in reviews:
+            total += i.rating
+            
+        product.rating = total / len(reviews)
+        product.save()
+        
+        return Response('Review Added')
 
