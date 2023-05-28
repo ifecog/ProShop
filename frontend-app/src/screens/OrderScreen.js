@@ -56,7 +56,7 @@ function OrderScreen() {
 
   useEffect(() => {
     if (!userInfo) {
-        navigate('/login')
+      navigate("/login")
     }
     if (
       !order ||
@@ -74,7 +74,15 @@ function OrderScreen() {
         setSdkReady(true)
       }
     }
-  }, [order, dispatch, orderId, successPay, successDelivery])
+  }, [
+    navigate,
+    userInfo,
+    order,
+    dispatch,
+    orderId,
+    successPay,
+    successDelivery,
+  ])
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult))
