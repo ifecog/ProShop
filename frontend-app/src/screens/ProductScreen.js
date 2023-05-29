@@ -33,13 +33,28 @@ function ProductScreen() {
   } = productCreateReview
 
   useEffect(() => {
+    if (successReview) {
+      setRating(0)
+      setComment("")
+      dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
+    }
     dispatch(listProductDetail(id))
-  }, [id, dispatch])
+  }, [id, dispatch, successReview])
 
   const navigate = useNavigate()
 
   const addToCartHandler = () => {
     navigate(`/cart/${id}?qty=${qty}`)
+  }
+
+  const reviewSubmitHandler = (e) => {
+    e.preventDefault()
+    dispatch(
+      createProductReview(id, {
+        rating,
+        comment,
+      })
+    )
   }
 
   return (
@@ -160,7 +175,6 @@ function ProductScreen() {
 
           <Row>
             <Col md={6}>
-              <br />
               <h4>Reviews</h4>
               {product.reviews.length === 0 && (
                 <Message variant='info'>No Review</Message>
@@ -171,8 +185,84 @@ function ProductScreen() {
                   <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
                     <Rating value={review.rating} color='#f8e825' />
+                    <p>{review.created_time.substring(0, 10)}</p>
+                    <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
+
+                <ListGroup.Item>
+                  <h4>Write a Review</h4>
+
+                  {loadingReview && <Loader />}
+                  {successReview && (
+                    <Message variant='success'>Review Submitted!</Message>
+                  )}
+                  {errorReview && <Message variant='danger'>{errorReview}</Message>}
+
+                  {userInfo ? (
+                    <Form onSubmit={reviewSubmitHandler}>
+                      <Form.Group controlId='rating'>
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Control
+                          className='form-select form-select-override'
+                          as='select'
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value=''>Select</option>
+                          <option value='1'>1 - Poor</option>
+                          <option value='2'>2 - Fair</option>
+                          <option value='3'>3 - Good</option>
+                          <option value='4'>4 - Very Good</option>
+                          <option value='5'>5 - Excellent</option>
+                        </Form.Control>
+                      </Form.Group>
+
+                      <div style={{ marginBottom: "1em" }}></div>
+
+                      <Form.Group controlId='comment'>
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as='textarea'
+                          rows='5'
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+
+                      <div style={{ marginBottom: "1em" }}></div>
+
+                      <Button
+                        variant='primary'
+                        disabled={loadingReview}
+                        type='submit'
+                        style={{ width: "100%" }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%",
+                          }}
+                        >
+                          Comment
+                        </div>
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Message variant='info'>
+                      Please,{" "}
+                      <Link
+                        to='/login'
+                        className='list-group-item-no-decoration'
+                      >
+                        login
+                      </Link>{" "}
+                      to write a review.
+                    </Message>
+                  )}
+                </ListGroup.Item>
               </ListGroup>
             </Col>
           </Row>
@@ -183,26 +273,3 @@ function ProductScreen() {
 }
 
 export default ProductScreen
-
-// const { id } = useParams()
-// const product = products.find((p) => String(p._id) === id)
-// if(!product) {
-//   return (
-//     <div>
-//       Product not found!
-//     </div>
-//   )
-// }
-
-// const [ product, setProduct ] = useState([])
-// const { id } = useParams()
-
-// useEffect(() => {
-//   async function fetchProduct(){
-//     const { data } = await axios.get(`/api/products/${id}`)
-//     setProduct(data)
-//   }
-
-//   fetchProduct()
-
-// }, [id])
