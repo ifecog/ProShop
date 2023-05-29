@@ -20,7 +20,7 @@ def get_products(request):
     
     products = Product.objects.filter(name__icontains=query)
     
-    paginator = Paginator(products, 5)
+    paginator = Paginator(products, 4)
     page = request.query_params.get('page')
     
     try:

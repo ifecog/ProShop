@@ -11,7 +11,7 @@ function SearchBox() {
   const submitHandler = (e) => {
     e.preventDefault()
     if (keyword) {
-      navigate(`/?keyword=${keyword}`)
+      navigate(`/?keyword=${keyword}&page=1`)
     } else {
       navigate(navigate(location.pathname))
     }
@@ -21,6 +21,7 @@ function SearchBox() {
     <Form onSubmit={submitHandler} inline className='d-flex'>
       <Form.Control
         type='text'
+        placeholder='search for products...'
         name='q'
         onChange={(e) => setKeyword(e.target.value)}
         className='mr-2 mx-1'
