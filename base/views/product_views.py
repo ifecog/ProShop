@@ -7,22 +7,37 @@ from rest_framework.response import Response
 from base.models import Product, Review
 from base.serializers import ProductSerializer
 from rest_framework import status
-# from .products import products
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 @api_view(['GET'])
 def get_products(request):
     query = request.query_params.get('keyword')
-    print('query:', query)
     
     if query == None:
         query = ''
     
     products = Product.objects.filter(name__icontains=query)
+    
+    paginator = Paginator(products, 5)
+    page = request.query_params.get('page')
+    
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+        
+    if page == None:
+        page = 1
+    
+    page = int(page)
+    
     serializer = ProductSerializer(products, many=True)
     
-    return Response(serializer.data)
+    return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
 
 @api_view(['GET'])
