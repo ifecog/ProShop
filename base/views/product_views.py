@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -50,7 +50,7 @@ def get_toprated_products(request):
 
 @api_view(['GET'])
 def get_product_detail(request, pk):
-    product = Product.objects.get(_id=pk)
+    product = get_object_or_404(Product, pk=pk)
     serializer = ProductSerializer(product, many=False)
     
     return Response(serializer.data)
@@ -76,7 +76,7 @@ def createProduct(request):
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
 def updateProduct(request, pk):
-    product = Product.objects.get(_id=pk)
+    product = get_object_or_404(Product, pk=pk)
     data = request.data
     
     # update fields
@@ -94,8 +94,8 @@ def updateProduct(request, pk):
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
 def productDelete(request, pk):
-    product_delete = Product.objects.get(_id=pk)
-    product_delete.delete()
+    product = get_object_or_404(Product, pk=pk)
+    product.delete()
     
     return Response('Product was successfully deleted')
 

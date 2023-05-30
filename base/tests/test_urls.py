@@ -60,7 +60,7 @@ class TestProductUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, updateProduct)
 
     def test_product_delete_url_is_resolved(self):
-        url = reverse('product-delete', args=['some-slug'])
+        url = reverse('delete-product', args=['some-slug'])
         self.assertEquals(resolve(url).func, productDelete)
 
 
