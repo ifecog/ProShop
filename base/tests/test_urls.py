@@ -18,6 +18,16 @@ from base.views.order_views import (
    updateOrderToPaid,
    updateOrderToDelivered 
 )
+from base.views.user_views import (
+    get_users,
+    register_user,
+    MyTokenObtainPairView,
+    get_user_profile,
+    update_user_profile,
+    getUserById,
+    updateUser,
+    deleteUser
+)
 
 class TestProductUrls(SimpleTestCase):
     
@@ -79,6 +89,41 @@ class TestOrderUrls(SimpleTestCase):
     def test_update_delivery_delete_url_is_resolved(self):
         url = reverse('update-delivery', args=['some-slug'])
         self.assertEquals(resolve(url).func, updateOrderToDelivered)
+
+
+class TestUserUrls(SimpleTestCase):
+    
+    def test_users_url_is_resolved(self):
+        url = reverse('users')
+        self.assertEquals(resolve(url).func, get_users)
+
+    def test_register_user_url_is_resolved(self):
+        url = reverse('register')
+        self.assertEquals(resolve(url).func, register_user)
+
+    def test_login_user_url_is_resolved(self):
+        url = reverse('token_obtain_pair')
+        self.assertEquals(resolve(url).func.view_class, MyTokenObtainPairView)
+
+    def test_user_profile_url_is_resolved(self):
+        url = reverse('user-profile')
+        self.assertEquals(resolve(url).func, get_user_profile)
+
+    def test_update_profile_url_is_resolved(self):
+        url = reverse('update-profile')
+        self.assertEquals(resolve(url).func, update_user_profile)
+
+    def test_get_user_url_is_resolved(self):
+        url = reverse('get-user', args=['some-slug'])
+        self.assertEquals(resolve(url).func, getUserById)
+
+    def test_update_user_url_is_resolved(self):
+        url = reverse('update-user', args=['some-slug'])
+        self.assertEquals(resolve(url).func, updateUser)
+
+    def test_delete_user_url_is_resolved(self):
+        url = reverse('delete-user', args=['some-slug'])
+        self.assertEquals(resolve(url).func, deleteUser)
 
 
 
