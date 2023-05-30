@@ -39,12 +39,13 @@ class TestProductViews(TestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Sample Product')
-
-    def test_createProduct_POST(self):
-        # create sample user
-        sample_user = User.objects.create(username='sampleuser', password='password', first_name='John', last_name='Peter', email='sample@gmail.com', is_staff=True, is_superuser=True)
         
-        # login the user
+    def test_createProduct_POST(self):
+        # Create a sample user for testing
+        sample_user = User.objects.create(username='sampleuser', is_staff=True, is_superuser=True)
+        sample_user.save()
+        
+        # Login the user
         self.client.force_login(sample_user)
         
         response = self.client.post(self.create_product_url, {
@@ -55,39 +56,41 @@ class TestProductViews(TestCase):
             'category': 'Sample Category',
             'description': '',
         })
-
-        # self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        
+        # self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         # Since the view is decorated with @permission_classes([IsAdminUser]), only admin users are allowed to access it
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         
     def test_updateProduct_PUT(self):
-        # create a sample user
-        sample_user = User.objects.create(username='sampleuser', password='password', first_name='John', last_name='Peter', email='sample@gmail.com', is_staff=True, is_superuser=True)
+        # Create a sample admin user for testing
+        sample_user = User.objects.create(username='sampleadmin', is_staff=True, is_superuser=True)
+        sample_user.save()
         
-        # create a sample product
+        # Create a sample product for testing
         sample_product = Product.objects.create(_id=1, name='Sample Product')
         
-        # login the sample user
+        # Login the admin user
         self.client.force_login(sample_user)
         
         response = self.client.put(self.update_product_url, {
             'name': 'Updated Name',
-            'price': 0,
-            'brand': 'Sample Brand',
-            'count_in_stock': 0,
-            'category': 'Sample Category',
-            'description': '',
+            'price': 10,
+            'brand': 'Updated Brand',
+            'count_in_stock': 5,
+            'category': 'Updated Category',
+            'description': 'Updated Description',
         })
-
-        # self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        
+        # self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Since the view is decorated with @permission_classes([IsAdminUser]), only admin users are allowed to access it
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        
+      
     def test_deleteProduct_DELETE(self):
         # Create a sample admin user for testing
-        sample_user = User.objects.create(username='sampleuser', password='password', first_name='John', last_name='Peter', email='sample@gmail.com', is_staff=True, is_superuser=True)
+        sample_user = User.objects.create(username='sampleadmin', is_staff=True, is_superuser=True)
+        sample_user.save()
         
         # Create a sample product for testing
         sample_product = Product.objects.create(_id=1, name='Sample Product')
@@ -104,7 +107,7 @@ class TestProductViews(TestCase):
 
     def test_createProductReview_POST(self):
         # Create a sample user for testing
-        sample_user = User.objects.create(username='sampleuser', password='password', first_name='John', last_name='Peter', email='sample@gmail.com')
+        sample_user = User.objects.create(username='sampleadmin', is_staff=True, is_superuser=True)
         
         # Create a sample product for testing
         sample_product = Product.objects.create(_id=1, name='Sample Product')
