@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,14 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'backend/frontend-app/build/static'),
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+
+AWS_ACCESS_KEY_ID = 'AKIA3X2RNQ7JYJTJMNHS'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'prodhop-bucketife'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
