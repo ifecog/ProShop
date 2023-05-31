@@ -24,8 +24,7 @@ function Header() {
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <SearchBox />
-            <Nav className='ml-auto'>
+            <Nav>
               <LinkContainer to='/cart'>
                 <Nav.Link>
                   <i className='fas fa-shopping-cart' aria-hidden='true'></i>
@@ -65,6 +64,9 @@ function Header() {
               )}
             </Nav>
           </Navbar.Collapse>
+          <div className='ml-auto'>
+            <SearchBox />
+          </div>
         </Container>
       </Navbar>
     </header>

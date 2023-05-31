@@ -87,6 +87,8 @@ def updateProduct(request, pk):
     product.category=data['category']
     product.count_in_stock=data['count_in_stock']
     
+    product.save()
+    
     serializer = ProductSerializer(product, many=False)
     
     return Response(serializer.data)
