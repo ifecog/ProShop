@@ -130,6 +130,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'backend/frontend-app/build/static'), ]
 
 MEDIA_URL = 'media/'
@@ -137,7 +139,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+# STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
+        # "OPTIONS": {
+        #     "location": "static",
+        # },
+        # "BUCKET_NAME": "prodhop-bucketife",
+    },
+    "staticfiles": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "LOCATION": os.path.join(BASE_DIR, "static"),
+    },
+}
+
 
 AWS_ACCESS_KEY_ID = 'AKIA3X2RNQ7JYJTJMNHS'
 AWS_SECRET_ACCESS_KEY = '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'
