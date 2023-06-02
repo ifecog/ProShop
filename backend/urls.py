@@ -28,4 +28,6 @@ urlpatterns = [
     path('api/orders/', include('base.urls.order_urls')),
     # path('api/', include('base.urls')),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
++ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
++ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
