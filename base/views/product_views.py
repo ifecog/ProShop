@@ -18,7 +18,7 @@ def get_products(request):
     if query == None:
         query = ''
     
-    products = Product.objects.filter(name__icontains=query)
+    products = Product.objects.filter(name__icontains=query).order_by('-created_time')
     
     paginator = Paginator(products, 4)
     page = request.query_params.get('page')
